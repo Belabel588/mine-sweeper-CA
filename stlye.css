@@ -1,0 +1,36 @@
+/* style.css */
+
+.main {
+  width: 300px;
+  height: 300px;
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* table,
+th,
+td {
+  
+} */
+
+.cellClicked {
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  background-color: rgba(43, 187, 100, 0.391);
+  border-radius: 60px;
+  
+  
+}
+
+.btn{
+  border-radius: 20px;
+  background-color: rgba(43, 187, 100, 0.391);
+  margin-top: 5px;
+}
+
+
+
+
+
