@@ -5,7 +5,9 @@
 .game-container{
 display:flex;
 flex-direction: column;
-gap:20px;
+justify-content: center;
+gap:15px;
+
 
 
 }
@@ -26,7 +28,7 @@ text-align:center
 
 table{
   background-color: rgba(167, 242, 197, 0.391);
-  padding:padding 0.8rem;
+  padding:padding 0.9rem;
   overflow: hidden;
   border-radius: 40px;
 
