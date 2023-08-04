@@ -79,9 +79,6 @@ function onCellClicked(elCell, i, j) {
   var cellClicked = gBoard[i][j];
 
 
-
-
-
   cellClicked.isShown = true
 
   // if (cellClicked.negsBombsCount === 0)
@@ -101,11 +98,10 @@ function onCellClicked(elCell, i, j) {
   if (cellClicked.isShown === true && cellClicked.negsBombsCount === 0) {
     elCell.classList.add('clicked-button')
   }
-
-
-
-
-
+  elCell.innerText = cellClicked.negsBombsCount;
+  if (cellClicked.negsBombsCount === 0) {
+    elCell.innerText = ''
+  }
 
   if (cellClicked.isBomb) {
     cellClicked.isShown = true;
@@ -140,6 +136,8 @@ function gameOver(isWin) {
   }
 
 }
+
+
 
 // function gameWon(isWin) {
 //   var message;
@@ -193,11 +191,12 @@ function renderBoard(board) {
 }
 
 
-function gameRestart() {
-  onInit()
 
+var gameRestart = document.querySelector('.game-restart')
+gameRestart.addEventListener('click', function () {
+  location.reload()
+})
 
-}
 
 // **********************************************************
 // * UTILITY
