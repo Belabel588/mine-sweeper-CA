@@ -19,7 +19,7 @@ text-align:center
 
 }
 .board-container {
-  width: 800px;
+  width: 500px;
   height: 300px;
   margin:auto  auto;
   display: flex;
@@ -30,7 +30,7 @@ table{
   background-color: rgba(167, 242, 197, 0.391);
   padding:padding 0.9rem;
   overflow: hidden;
-  border-radius: 40px;
+  border-radius: 20px;
 
 }
 
