@@ -10,28 +10,42 @@
 
 
 
-
 <body onload="onInit()">
+<div class="game-container">
 
 
-  <div class="main">
 
-    <table class= "board"> </table>
-    
-    <button class="btn"> 😊 </button>
+
+  
+  <div class="buttons">
     <button class="btn diff diff1" onclick="getDifficulty(this)"> easy </button>
     <button class="btn diff diff2" onclick="getDifficulty(this)"> medium</button>
     <button class="btn diff diff3" onclick="getDifficulty(this)"> hard</button>
+    
+  </div>
+  <div class="board-container">
+    
+    <table class= "board"> </table>
+    
+    <div class="game-start-container">
 
+      
+      <button class="btn"> 😊 </button>
+      <footer class="made-by"> made by: Ori Halfon</footer>
+
+    </div>
+    
+    
   </div>    
-    
-    
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
   <script src="main.js"></script>
 </body>
+</div>
 </html>
 

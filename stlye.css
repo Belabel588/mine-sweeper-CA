@@ -1,34 +1,83 @@
 /* style.css */
 
-.main {
-  width: 300px;
+
+
+.game-container{
+display:flex;
+flex-direction: column;
+gap:20px;
+
+
+}
+
+.buttons{
+text-align:center
+
+
+
+}
+.board-container {
+  width: 800px;
   height: 300px;
-  margin: auto auto;
+  margin:auto  auto;
   display: flex;
   flex-direction: column;
 }
 
-/* table,
-th,
-td {
-  
-} */
+table{
+  background-color: rgba(167, 242, 197, 0.391);
+  padding:padding 0.8rem;
+  overflow: hidden;
+  border-radius: 40px;
+
+}
 
 .cellClicked {
-  height: 50px;
+  height: 80px;
   width: 50px;
   text-align: center;
   background-color: rgba(43, 187, 100, 0.391);
-  border-radius: 60px;
+  border-radius: 80px;
+}
+  
+.cellClicked:hover{
+  transform: translateY(-0.1rem);
+  box-shadow: 0 3.2rem 6.4rem rgba(0, 0 , 0, 0.10);
+
+}
+
   
   
+.game-start-container{
+display:flex;
+flex-direction: column;
+ align-items: center;
+
 }
 
 .btn{
-  border-radius: 20px;
-  background-color: rgba(43, 187, 100, 0.391);
-  margin-top: 5px;
-}
+    width: 80px;
+    height: 40px; /* Adjust the height as needed */
+    border-radius: 40px;
+    background-color: rgba(43, 187, 100, 0.391);
+    margin-top: 20px;
+    padding: 0 10px; /* Smaller padding to center the text horizontally */
+    text-align: center;
+    border: 0.1px solid grey;
+  }
+
+    .made-by {
+      margin-top: 30px;
+      padding: 5px; 
+      background-color: rgba(22, 177, 84, 0.391);
+      border-radius: 40px;
+      width: 200px;
+      text-align: center;
+      display: inline-block;
+
+  }
+  
+
 
 
 
