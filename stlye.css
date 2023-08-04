@@ -99,10 +99,10 @@ flex-direction: column;
 
     .made-by {
       margin-top: 1rem;
-      padding: 5px; 
+      padding: 1rem; 
       background-color: rgba(22, 177, 84, 0.391);
       border-radius: 4rem;
-      width: 10rem;
+      width: 11rem;
       text-align: center;
       display: inline-block;
       color:white;
@@ -119,7 +119,14 @@ flex-direction: column;
 display: flex;
 flex-direction: row;
 gap:0.5rem
+}
 
+.game-restart{
+font-size: 1.4rem;
+
+}
+.flag{
+font-size: 1.4rem;
 
 }
 

@@ -195,6 +195,7 @@ function renderBoard(board) {
 var gameRestart = document.querySelector('.game-restart')
 gameRestart.addEventListener('click', function () {
   location.reload()
+
 })
 
 
