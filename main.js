@@ -107,6 +107,18 @@ function gameOver(isWin) {
 
 }
 
+// function gameWon(isWin) {
+//   var message;
+//   for (var i = 0; i < gBoard.length; i++) {
+//     for (var j = 0; j < gBoard[i].length; j++) {
+
+//       var isWin = 
+//   if (isWin) {
+//         alert('YOU WON!!')
+//       }
+//     }
+//   }
+// }
 // **********************************************************
 // * DOM (UI)
 // **********************************************************
