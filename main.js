@@ -19,12 +19,14 @@ gGame = {
 }
 
 function onInit() {
+  gGame.isOn = true
   gGame.shownCount = 0
   gGame.markedCount = 0
   gGame.secsPassed = 0
   gBoard = createBoardData();
   console.table(gBoard);
   renderBoard(gBoard);
+
 }
 
 function getDifficulty(elBtn) {
@@ -43,7 +45,6 @@ function getDifficulty(elBtn) {
     gBoard = createBoardData(gLevel.SIZE);
   }
   elBtn.style.backgroundColor = 'rgba(41, 255, 144, 0.548)';
-  gCount = 1;
   renderBoard(gBoard);
 
 }
@@ -70,31 +71,37 @@ function createBoardData() {
 
   // TODO 2. INSERTING BOMBS DATA INTO THE TABLE ✅
 
-  board[1][1].isBomb = BOMB
-  board[2][3].isBomb = BOMB
+  // board[1][1].isBomb = BOMB
+  // board[2][3].isBomb = BOMB
   return board;
 }
 
 // TODO: 5. USING THE COUNT BOMBS FUNCTION TO COUNT BOMBS AROUND EACH CELL WHEN CLICKED ✅
 
 function onCellClicked(elCell, i, j) {
-  console.log('i', i);
-  console.log('j', j);
+  gGame.shownCount++
+  console.log('Checking win...');
+  console.log('gGame.shownCount:', gGame.shownCount);
+  console.log(
+    'Expected shown count:',
+    gLevel.SIZE * gLevel.SIZE - gLevel.MINES
+  );
+  console.log('gGame.markedCount:', gGame.markedCount);
+  console.log('Expected marked count:', gLevel.MINES);
+  // console.log('i', i);
+  // console.log('j', j);
   var cellClicked = gBoard[i][j];
 
-
+  if (cellClicked.isMarked) return
   cellClicked.isShown = true
 
-  // if (cellClicked.negsBombsCount === 0)
+  if (!firstClickIsOn) {
+    randomizeBombs(gBoard, gLevel.MINES, { i, j });
+    firstClickIsOn = true;
+  }
 
-
-
-  // if (!firstClickIsOn) {
-  //   randomizeBombs(gBoard, gLevel.MINES, { i, j });
-  //   firstClickIsOn = true;
-  // }
   if (!cellClicked.isBomb) {
-    gGame.shownCount++
+    // gGame.markedCount++
   }
 
   if (cellClicked.isMarked) {
@@ -118,25 +125,35 @@ function onCellClicked(elCell, i, j) {
   }
   if (cellClicked.isShown) return
 
-  if (gGame.shownCount === (gLevel.SIZE * gLevel.SIZE - gLevel.MINES) && (gGame.markedCount === gLevel.MINES)) {
-    console.log(gGame.shownCount)
-    gameOver(true)
+
+  if (cellClicked.isBomb) {
+    cellClicked.isShown = true;
+    gameOver(false);
+    return;
   }
 
 
-
-
+  checkWin()
   renderBoard(gBoard)
+}
+function checkWin() {
+  if (gGame.shownCount === (gLevel.SIZE * gLevel.SIZE - gLevel.MINES) && (gGame.markedCount === gLevel.MINES)) {
+    gGame.isOn = false
+    gameOver(true)
+  }
+
 }
 
 function gameOver(isWin) {
+  gGame.isOn = false
+
   var elEmojiBtn = document.querySelector('.game-restart')
-  var message;
+
   if (isWin) {
-    message = alert('YOU WON!!');
+    alert('YOU WON!!');
     elEmojiBtn.innerText = '🥳'
   } else {
-    message = alert('YOU LOST!!');
+    alert('YOU LOST!!');
     elEmojiBtn.innerText = '🤯'
     for (var i = 0; i < gBoard.length; i++) {
       for (var j = 0; j < gBoard[i].length; j++) {
@@ -146,6 +163,7 @@ function gameOver(isWin) {
       }
     }
     renderBoard(gBoard);
+
   }
 
 }
@@ -154,6 +172,8 @@ function gameOver(isWin) {
 
 function onRightClick(event, i, j, elCell) {
   event.preventDefault()
+  gGame.markedCount++
+
   var cellClicked = gBoard[i][j]
   if (cellClicked.isShown) return
   if (cellClicked.isMarked) {
@@ -165,6 +185,14 @@ function onRightClick(event, i, j, elCell) {
     elCell.innerText = '🚩'
     cellClicked.isMarked = true
     if (cellClicked.isBomb) gGame.markedCount++
+    console.log('Checking win...');
+    console.log('gGame.shownCount:', gGame.shownCount);
+    console.log(
+      'Expected shown count:',
+      gLevel.SIZE * gLevel.SIZE - gLevel.MINES
+    );
+    console.log('gGame.markedCount:', gGame.markedCount);
+    console.log('Expected marked count:', gLevel.MINES);
   }
 }
 
@@ -195,7 +223,7 @@ function renderBoard(board) {
         cellContent = cell.negsBombsCount > 0 ? cell.negsBombsCount : '';
       }
 
-      // if (cell.negsBombsCount > 0 && )
+
 
       //  TODO: 6. IMPLEMENTING THE BOMBS DETECTED INTO THE UI ✅
 
@@ -217,6 +245,8 @@ gameRestart.addEventListener('click', function () {
   location.reload()
 
 })
+
+
 
 
 // **********************************************************
