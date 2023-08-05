@@ -80,14 +80,7 @@ function createBoardData() {
 
 function onCellClicked(elCell, i, j) {
   gGame.shownCount++
-  console.log('Checking win...');
-  console.log('gGame.shownCount:', gGame.shownCount);
-  console.log(
-    'Expected shown count:',
-    gLevel.SIZE * gLevel.SIZE - gLevel.MINES
-  );
-  console.log('gGame.markedCount:', gGame.markedCount);
-  console.log('Expected marked count:', gLevel.MINES);
+
   // console.log('i', i);
   // console.log('j', j);
   var cellClicked = gBoard[i][j];
