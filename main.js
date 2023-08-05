@@ -19,6 +19,9 @@ gGame = {
 }
 
 function onInit() {
+  gGame.shownCount = 0
+  gGame.markedCount = 0
+  gGame.secsPassed = 0
   gBoard = createBoardData();
   console.table(gBoard);
   renderBoard(gBoard);
@@ -42,6 +45,7 @@ function getDifficulty(elBtn) {
   elBtn.style.backgroundColor = 'rgba(41, 255, 144, 0.548)';
   gCount = 1;
   renderBoard(gBoard);
+
 }
 
 // **********************************************************
@@ -66,8 +70,8 @@ function createBoardData() {
 
   // TODO 2. INSERTING BOMBS DATA INTO THE TABLE ✅
 
-  // board[1][1].isBomb = BOMB
-  // board[2][3].isBomb = BOMB
+  board[1][1].isBomb = BOMB
+  board[2][3].isBomb = BOMB
   return board;
 }
 
@@ -85,13 +89,18 @@ function onCellClicked(elCell, i, j) {
 
 
 
-  if (!firstClickIsOn) {
-    randomizeBombs(gBoard, gLevel.MINES, { i, j });
-    firstClickIsOn = true;
-  }
+  // if (!firstClickIsOn) {
+  //   randomizeBombs(gBoard, gLevel.MINES, { i, j });
+  //   firstClickIsOn = true;
+  // }
   if (!cellClicked.isBomb) {
     gGame.shownCount++
   }
+
+  if (cellClicked.isMarked) {
+    gGame.shownCount++
+  }
+
   cellClicked.negsBombsCount = bombCountNegs(gBoard, i, j);
   console.log('cellClicked', cellClicked);
 
@@ -107,12 +116,13 @@ function onCellClicked(elCell, i, j) {
     cellClicked.isShown = true;
     gameOver(false);
   }
+  if (cellClicked.isShown) return
 
-  if (gGame.shownCount === gLevel.SIZE * gLevel.SIZE - gLevel.MINES) {
+  if (gGame.shownCount === (gLevel.SIZE * gLevel.SIZE - gLevel.MINES) && (gGame.markedCount === gLevel.MINES)) {
     console.log(gGame.shownCount)
     gameOver(true)
   }
-  if (cellClicked.isShown) return
+
 
 
 
@@ -120,11 +130,14 @@ function onCellClicked(elCell, i, j) {
 }
 
 function gameOver(isWin) {
+  var elEmojiBtn = document.querySelector('.game-restart')
   var message;
   if (isWin) {
     message = alert('YOU WON!!');
+    elEmojiBtn.innerText = '🥳'
   } else {
     message = alert('YOU LOST!!');
+    elEmojiBtn.innerText = '🤯'
     for (var i = 0; i < gBoard.length; i++) {
       for (var j = 0; j < gBoard[i].length; j++) {
         if (gBoard[i][j].isBomb) {
@@ -139,18 +152,24 @@ function gameOver(isWin) {
 
 
 
-// function gameWon(isWin) {
-//   var message;
-//   for (var i = 0; i < gBoard.length; i++) {
-//     for (var j = 0; j < gBoard[i].length; j++) {
+function onRightClick(event, i, j, elCell) {
+  event.preventDefault()
+  var cellClicked = gBoard[i][j]
+  if (cellClicked.isShown) return
+  if (cellClicked.isMarked) {
+    elCell.innerText = ''
+    cellClicked.isMarked = false
+    if (cellClicked.isBomb) gGame.markedCount--
+  }
+  else if (!cellClicked.isMarked) {
+    elCell.innerText = '🚩'
+    cellClicked.isMarked = true
+    if (cellClicked.isBomb) gGame.markedCount++
+  }
+}
 
-//       var isWin = 
-//   if (isWin) {
-//         alert('YOU WON!!')
-//       }
-//     }
-//   }
-// }
+
+
 // **********************************************************
 // * DOM (UI)
 // **********************************************************
@@ -182,13 +201,14 @@ function renderBoard(board) {
 
       var className = 'cellClicked cellClicked' + i + '-' + j;
       const title = `cell: ${i} , ${j}`;
-      strHTML += `<td  title ="${title}" class= "${className}" onclick="onCellClicked(this,${i}, ${j})" oncontextmenu="onRightClick(event, ${i}, ${j}); return false"> ${cellContent}</td>`;
+      strHTML += `<td  title ="${title}" class= "${className}" onclick="onCellClicked(this,${i}, ${j})" oncontextmenu="onRightClick(event, ${i}, ${j}, this)"> ${cellContent}</td>`;
     }
     strHTML += '</tr>';
   }
   const elBoard = document.querySelector('.board');
   elBoard.innerHTML = strHTML;
 }
+
 
 
 
