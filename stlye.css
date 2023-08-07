@@ -55,10 +55,24 @@ td {
 
 .buttons{
   text-align:center
-  
-  
-  
 }
+
+  #timer{
+    width: 2rem;
+    height: 1rem;
+    border-radius: 40px;
+    background-color: rgba(116, 207, 153, 0.391);
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    text-align: center;
+    border: 0.1px solid grey;
+    color: white; 
+    font-size: 0.9rem;
+   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+   text-transform: uppercase;
+  }
+  
+  
 .board-container {
   width: 97%;
   height: 10rem;

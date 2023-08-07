@@ -1,5 +1,4 @@
-//* PAGE LOADING
-// *****************************************************
+
 
 // * globals:
 // ********************
@@ -7,16 +6,29 @@ var gBoard;
 const BOMB = '💣';
 const FLAG = '🚩';
 const EMPTY = '';
+const LIFE = '💙'
+var lifeCounter = 3
 var firstClickIsOn = false;
 var gLevel = {
   SIZE: 4,
-  MINES: 2,
+  MINES: 3,
 };
 
 gGame = {
   isOn: false,
   shownCount: 0, markedCount: 0, secsPassed: 0
 }
+
+
+const timerElement = document.getElementById('timer');
+const intervalId = setInterval(setTimer, 1000);
+
+let seconds = 0;
+let minutes = 0;
+
+
+//* PAGE LOADING
+// *****************************************************
 
 function onInit() {
   gGame.isOn = true
@@ -26,6 +38,7 @@ function onInit() {
   gBoard = createBoardData();
   console.table(gBoard);
   renderBoard(gBoard);
+  setTimer()
 
 }
 
@@ -33,7 +46,7 @@ function getDifficulty(elBtn) {
   var diff = elBtn.classList;
   if (diff.contains('diff1')) {
     gLevel.SIZE = 4;
-    gLevel.MINES = 2;
+    gLevel.MINES = 3;
     gBoard = createBoardData(gLevel.SIZE);
   } else if (diff.contains('diff2')) {
     gLevel.SIZE = 8;
@@ -69,6 +82,9 @@ function createBoardData() {
     }
   }
 
+
+
+
   // TODO 2. INSERTING BOMBS DATA INTO THE TABLE ✅
 
   // board[1][1].isBomb = BOMB
@@ -78,12 +94,23 @@ function createBoardData() {
 
 // TODO: 5. USING THE COUNT BOMBS FUNCTION TO COUNT BOMBS AROUND EACH CELL WHEN CLICKED ✅
 
+
+
+function updateLives() {
+  var life = document.getElementById('lives-counter')
+  life.innerText = lifeCounter
+}
+
+
 function onCellClicked(elCell, i, j) {
   gGame.shownCount++
 
   // console.log('i', i);
   // console.log('j', j);
   var cellClicked = gBoard[i][j];
+
+
+
 
   if (cellClicked.isMarked) return
   cellClicked.isShown = true
@@ -101,6 +128,17 @@ function onCellClicked(elCell, i, j) {
     gGame.shownCount++
   }
 
+  if (cellClicked.isBomb) {
+    elCell.innerText = BOMB
+    cellClicked.isShown = true;
+    lifeCounter--
+    updateLives()
+    if (lifeCounter === 0) {
+      gameOver()
+    }
+    return;
+  }
+
   cellClicked.negsBombsCount = bombCountNegs(gBoard, i, j);
   console.log('cellClicked', cellClicked);
 
@@ -112,18 +150,12 @@ function onCellClicked(elCell, i, j) {
     elCell.innerText = ''
   }
 
-  if (cellClicked.isBomb) {
-    cellClicked.isShown = true;
-    gameOver(false);
-  }
   if (cellClicked.isShown) return
 
 
-  if (cellClicked.isBomb) {
-    cellClicked.isShown = true;
-    gameOver(false);
-    return;
-  }
+
+
+
 
 
   checkWin()
@@ -139,14 +171,10 @@ function checkWin() {
 
 function gameOver(isWin) {
   gGame.isOn = false
-
   var elEmojiBtn = document.querySelector('.game-restart')
-
   if (isWin) {
-    alert('YOU WON!!');
     elEmojiBtn.innerText = '🥳'
   } else {
-    alert('YOU LOST!!');
     elEmojiBtn.innerText = '🤯'
     for (var i = 0; i < gBoard.length; i++) {
       for (var j = 0; j < gBoard[i].length; j++) {
@@ -178,14 +206,7 @@ function onRightClick(event, i, j, elCell) {
     elCell.innerText = '🚩'
     cellClicked.isMarked = true
     if (cellClicked.isBomb) gGame.markedCount++
-    console.log('Checking win...');
-    console.log('gGame.shownCount:', gGame.shownCount);
-    console.log(
-      'Expected shown count:',
-      gLevel.SIZE * gLevel.SIZE - gLevel.MINES
-    );
-    console.log('gGame.markedCount:', gGame.markedCount);
-    console.log('Expected marked count:', gLevel.MINES);
+
   }
 }
 
@@ -210,15 +231,12 @@ function renderBoard(board) {
         cellContent = FLAG;
       } else if (cell.isShown) {
         if (cell.isBomb) {
-          cellContent = BOMB;
+          cellContent = BOMB
         }
       } else {
         cellContent = cell.negsBombsCount > 0 ? cell.negsBombsCount : '';
       }
 
-
-
-      //  TODO: 6. IMPLEMENTING THE BOMBS DETECTED INTO THE UI ✅
 
       var className = 'cellClicked cellClicked' + i + '-' + j;
       const title = `cell: ${i} , ${j}`;
@@ -230,14 +248,30 @@ function renderBoard(board) {
   elBoard.innerHTML = strHTML;
 }
 
-
-
-
 var gameRestart = document.querySelector('.game-restart')
 gameRestart.addEventListener('click', function () {
   location.reload()
-
 })
+
+
+
+
+function setTimer() {
+
+  seconds++;
+  if (seconds >= 60) {
+    seconds = 0;
+    minutes++;
+  }
+
+
+  const formattedSeconds = String(seconds).padStart(2, '0');
+  const formattedMinutes = String(minutes).padStart(2, '0');
+
+
+  timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+}
+
 
 
 
